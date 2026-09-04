@@ -56,8 +56,11 @@ const pageObserver = new IntersectionObserver(
       }
 
       if (entry.target.id === "prologue") {
-        const interval = 850; // 텍스트 라인 간격 (ms)
-        const readingDelay = 2000; // 마지막 라인 표시 후 대기 시간 (ms)
+        // [중요] 중복 실행 및 스크롤 충돌 방지를 위해 즉시 관찰 중단
+        pageObserver.unobserve(entry.target);
+
+        const interval = 850;
+        const readingDelay = 2000;
 
         // 1. 프롤로그 라인 순차 표시
         prologueLines.forEach((line, index) => {
@@ -70,12 +73,8 @@ const pageObserver = new IntersectionObserver(
         const totalDuration = (prologueLines.length - 1) * interval + readingDelay;
 
         window.setTimeout(() => {
-          // [수정] 네 번째('agreement')가 아닌 세 번째 랜딩 섹션('landing') ID 지정
-          const nextSection = document.getElementById("landing"); 
-
+          const nextSection = document.getElementById("landing");
           if (nextSection) {
-            pageObserver.unobserve(entry.target);
-
             nextSection.scrollIntoView({
               behavior: "smooth",
               block: "start"
@@ -87,7 +86,7 @@ const pageObserver = new IntersectionObserver(
   },
   {
     root: pages,
-    threshold: 0.1
+    threshold: 0.5 // 감지 임계값을 0.5 정도로 올려 정확도 향상
   }
 );
 

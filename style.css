@@ -35,27 +35,30 @@ body {
     "Malgun Gothic", sans-serif;
 }
 
+/* 기존 #pages 수정 */
 #pages {
   width: 100%;
   height: 100svh;
   overflow-y: auto;
   overflow-x: hidden;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
+  /* scroll-snap-type 및 scroll-behavior: smooth 구문 제거 */
   scrollbar-width: none;
 }
-#pages::-webkit-scrollbar { display: none; }
 
-.page {
-  position: relative;
-  width: 100%;
-  min-height: 100svh;
-  height: 100svh;
+/* 1번째, 2번째 섹션에만 스냅 적용 */
+.page--intro,
+.page--prologue {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  overflow: hidden;
 }
 
+/* 세 번째 랜딩 페이지 스냅 완전 제외 */
+.page--landing {
+  height: auto !important;
+  min-height: 100svh;
+  overflow-y: visible !important;
+  scroll-snap-align: none !important; /* 스냅 동작 비활성화 */
+}
 /* INTRO */
 .page--intro {
   background: #000;
