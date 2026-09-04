@@ -35,29 +35,36 @@ body {
     "Malgun Gothic", sans-serif;
 }
 
-/* 기존 #pages 수정 */
+/* 부모 스크롤 컨테이너 복원 */
 #pages {
   width: 100%;
   height: 100svh;
   overflow-y: auto;
   overflow-x: hidden;
-  /* scroll-snap-type 및 scroll-behavior: smooth 구문 제거 */
+  scroll-snap-type: y mandatory; /* 모바일 스크롤 동작을 위해 복원 */
+  -webkit-overflow-scrolling: touch; /* 모바일 터치 스크롤 부드럽게 처리 */
   scrollbar-width: none;
 }
+#pages::-webkit-scrollbar { display: none; }
 
-/* 1번째, 2번째 섹션에만 스냅 적용 */
-.page--intro,
-.page--prologue {
+/* 1, 2, 4번째 일반 섹션 스냅 재적용 */
+.page {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  height: 100svh;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  overflow: hidden;
 }
 
-/* 세 번째 랜딩 페이지 스냅 완전 제외 */
+/* 세 번째 랜딩 페이지 전용 (스냅 동작 및 높이 제한만 해제) */
 .page--landing {
   height: auto !important;
   min-height: 100svh;
   overflow-y: visible !important;
-  scroll-snap-align: none !important; /* 스냅 동작 비활성화 */
+  scroll-snap-align: none !important; /* 스냅에서 제외 */
+  scroll-snap-stop: normal !important;
 }
 /* INTRO */
 .page--intro {
