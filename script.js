@@ -56,11 +56,12 @@ const pageObserver = new IntersectionObserver(
       }
 
       if (entry.target.id === "prologue") {
-        // [중요] 중복 실행 및 스크롤 충돌 방지를 위해 즉시 관찰 중단
-        pageObserver.unobserve(entry.target);
+        // 이미 연출이 진행 중이라면 중복 실행 방지
+        if (entry.target.classList.contains("is-playing")) return;
+        entry.target.classList.add("is-playing");
 
-        const interval = 850;
-        const readingDelay = 2000;
+        const interval = 850; // 텍스트 라인 간격
+        const readingDelay = 2000; // 완료 후 대기 시간
 
         // 1. 프롤로그 라인 순차 표시
         prologueLines.forEach((line, index) => {
@@ -69,7 +70,7 @@ const pageObserver = new IntersectionObserver(
           }, index * interval);
         });
 
-        // 2. 연출 완료 후 세 번째 섹션(#landing)으로 이동
+        // 2. 연출 완료 후 세 번째 섹션(#landing)으로 자동 이동
         const totalDuration = (prologueLines.length - 1) * interval + readingDelay;
 
         window.setTimeout(() => {
@@ -80,13 +81,15 @@ const pageObserver = new IntersectionObserver(
               block: "start"
             });
           }
+          // 스크롤 이동이 끝난 후 관찰 해제
+          pageObserver.unobserve(entry.target);
         }, totalDuration);
       }
     });
   },
   {
     root: pages,
-    threshold: 0.5 // 감지 임계값을 0.5 정도로 올려 정확도 향상
+    threshold: 0.3
   }
 );
 

@@ -58,13 +58,23 @@ body {
   overflow: hidden;
 }
 
-/* 세 번째 랜딩 페이지 전용 (스냅 동작 및 높이 제한만 해제) */
+/* 세 번째 랜딩 페이지 전용 스냅 및 높이 설정 */
 .page--landing {
   height: auto !important;
   min-height: 100svh;
   overflow-y: visible !important;
-  scroll-snap-align: none !important; /* 스냅에서 제외 */
+  scroll-snap-align: start !important; /* start로 지정하여 이미지 시작점에 정상 안착 */
   scroll-snap-stop: normal !important;
+}
+
+/* 랜딩 이미지 가시성 보장 */
+.landing__image-wrap {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #000;
 }
 /* INTRO */
 .page--intro {
